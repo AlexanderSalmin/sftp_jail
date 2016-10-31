@@ -1,12 +1,12 @@
 {
-  "name": "puppet-sftp_jail",
-  "version": "1.0.1-rc0",
-  "author": "Vox Pupuli",
-  "summary": "Leverage saz-ssh module to build SFTP jails",
+  "name": "salmin/sftp_jail",
+  "version": "1.0.0",
+  "author": "Alexander Salmin",
+  "summary": "Another version of voxpupuli/puppet-sftp_jail",
   "license": "Apache-2.0",
-  "source": "https://github.com/voxpupuli/puppet-sftp_jail.git",
-  "project_page": "https://github.com/voxpupuli/puppet-sftp_jail",
-  "issues_url": "https://github.com/voxpupuli/puppet-sftp_jail.git",
+  "source": "https://github.com/salmin/sftp_jail.git",
+  "project_page": "https://github.com/salmin/sftp_jail",
+  "issues_url": "https://github.com/salmin/sftp_jail.git",
   "dependencies": [
     {
       "name": "saz/ssh",

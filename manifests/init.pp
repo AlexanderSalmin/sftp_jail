@@ -1,26 +1,57 @@
 # Class: sftp_jail
 # ===========================
 #
-# Full description of class sftp_jail here.
+# Based on puppetlabs sftp_jail
 #
-# Parameters
+# Parameters in hiera
 # ----------
+# 
+# sftp_jail::user: <user>
+# sftp_jail::group: <group>
+# sftp_jail::chroot: <path>
 #
-# * `sample parameter`
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
 #
 class sftp_jail (
-  $chroot_base = '/chroot',
-) inherits ::sftp_jail::params {
+  $user = 'undef',
+  $group = 'undef',
+  $chroot = '/chroot',
+) {
 
-  # validate parameters here
-  validate_string($chroot_base)
+  validate_string($user)
+  validate_string($group)
+  validate_string($chroot)
 
-  file { $chroot_base:
+  file { $chroot:
     ensure => 'directory',
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
+  }
+  file { "${chroot}/${user}":
+    ensure => 'directory',
+    owner  => $user,
+    group  => $group,
+    mode   => '0755',
+  }
+  package { 'sftp_jail':
+    ensure => latest,
+  }
+
+  ssh::server::match_block { $group:
+    type    => 'Group',
+    options => {
+      'ChrootDirectory'        => $chroot,
+      'ForceCommand'           => 'internal-sftp',
+      'PasswordAuthentication' => 'no',
+      'AllowTcpForwarding'     => 'no',
+      'X11Forwarding'          => 'no',
+    },
+  }
+
+  service { 'sftp_jail':
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
   }
 }
